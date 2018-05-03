@@ -17,16 +17,22 @@ models.bind_test()
 @app.route('/enter/<assignment_id>/')
 def submission_page(assignment_id):
     assignment = api.get_assignment(assignment_id)
+    print(assignment)
     template = env.get_template('submission.html')
     return template.render(**assignment)
 
 
 @app.route('/submit/<assignment_id>/', methods=['POST'])
 def submission_finished(assignment_id):
+    images = {img: request.files[img]
+              for img in request.files
+              if img.startswith('figure_')}
+
     student_name, student_id = api.register_submission(
         request.form['student_id'],
         assignment_id,
-        request.form['submission_text'])
+        request.form['submission_text'],
+        images)
     template = env.get_template('finished.html')
     return template.render(student_name=student_name, student_id=student_id)
 
@@ -37,7 +43,11 @@ def upload_assignment():
     due_date = parser.parse(request.form['due_date'])
     word_limit = (int(request.form['word_limit'])
                   if 'word_limit' in request.form else None)
-    assignment_id = api.register_assignment(description, due_date, word_limit)
+    nimages = request.form['nimages']
+    assignment_id = api.register_assignment(description,
+                                            due_date,
+                                            word_limit,
+                                            nimages)
     return jsonify({'id': assignment_id})
 
 

@@ -2,7 +2,7 @@ from collections import defaultdict
 from pony import orm
 
 from . import convert
-from .models import Student, Assignment, Submission
+from .models import Student, Assignment, Submission, Image
 
 
 class WordLimitError(Exception):
@@ -14,9 +14,10 @@ class ClosedAssignmentError(Exception):
 
 
 @orm.db_session()
-def register_assignment(description, due_date, word_limit=None):
+def register_assignment(description, due_date, word_limit=None, nimages=0):
     assignment = Assignment(description=description,
-                            due_date=due_date)
+                            due_date=due_date,
+                            nimages=nimages)
     if word_limit is not None:
         assignment.word_limit = word_limit
     orm.commit()
@@ -38,7 +39,7 @@ def get_student_list():
 
 
 @orm.db_session()
-def register_submission(student_id, assignment_id, text):
+def register_submission(student_id, assignment_id, text, images):
     assignment = Assignment[assignment_id]
 
     if not assignment.isopen:
@@ -56,9 +57,14 @@ def register_submission(student_id, assignment_id, text):
         raise ClosedAssignmentError(
             'Student has already submitted for this assignment')
 
-    Submission(text=text,
-               assignment=assignment,
-               student=student)
+    submission = Submission(text=text,
+                            assignment=assignment,
+                            student=student)
+    if assignment.nimages > 0:
+        for name, im in images.items():
+            image = Image(submission=submission,
+                          name=name,
+                          image=im.stream.read())
 
     return student.name, student.student_id
 

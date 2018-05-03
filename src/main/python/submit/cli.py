@@ -7,9 +7,10 @@ def assign(args, url):
         description = f.read()
     due_date = parser.parse(args['<DUE_DATE>'])
     payload = {'description': description,
-               'due_date': due_date.strftime('%Y %m %d')}
-    if args['<WORD_LIMIT>']:
-        payload['word_limit'] = int(args['<WORD_LIMIT>'])
+               'due_date': due_date.strftime('%Y %m %d'),
+               'nimages': args['--number-of-images']}
+    if args['--word-limit']:
+        payload['word_limit'] = int(args['--word-limit'])
 
     r = requests.post(url+'/api/assignments/', data=payload)
 

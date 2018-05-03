@@ -39,13 +39,15 @@ class Assignment(db.Entity):
     submissions = orm.Set('Submission')
     description = orm.Required(str)
     isopen = orm.Required(bool, default=True)
+    nimages = orm.Required(int, default=0)
 
     def as_dict(self):
         return {'id': self.id,
                 'isopen': self.isopen,
                 'word_limit': self.word_limit,
                 'due_date': self.due_date,
-                'description': self.description}
+                'description': self.description,
+                'nimages': self.nimages}
 
 
 class Submission(db.Entity):
@@ -53,3 +55,10 @@ class Submission(db.Entity):
     assignment = orm.Required(Assignment)
     student = orm.Required(Student)
     grade = orm.Optional(int)
+    images = orm.Set('Image')
+
+
+class Image(db.Entity):
+    submission = orm.Required(Submission)
+    name = orm.Required(str)
+    image = orm.Required(bytes)

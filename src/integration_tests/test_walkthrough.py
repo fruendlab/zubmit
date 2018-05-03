@@ -17,7 +17,8 @@ print('Uploading assignment')
 cli.assign({'assign': True,
             '<DESCRIPTION>': 'description.md',
             '<DUE_DATE>': '2018-05-20',
-            '<WORD_LIMIT>': '20'}, URL)
+            '--word-limit': '20',
+            '--number-of-images': 2}, URL)
 
 time.sleep(0.3)
 
@@ -29,6 +30,7 @@ with Browser('chrome', executable_path=executable) as browser:
     browser.fill('submission_text',
                  '# This is a test\n'
                  'Test if I can enter something')
+    browser.fill('figure_1', os.path.abspath('./test.png'))
     submit_button = browser.find_by_id('submit-button')
     submit_button.click()
 
@@ -41,4 +43,3 @@ for fmt, viewer in [('markdown', 'less'),
                   '--output': 'test.{}'}, URL)
     ext = 'md' if fmt == 'markdown' else fmt
     subprocess.run('{} test.{}'.format(viewer, ext), shell=True)
-    # os.remove('test.{}'.format(ext))

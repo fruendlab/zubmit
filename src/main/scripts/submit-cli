@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 """
 Usage:
-    submit-cli assign <DESCRIPTION> <DUE_DATE> [<WORD_LIMIT>]
+    submit-cli assign [options] <DESCRIPTION> <DUE_DATE>
     submit-cli register <STUDENT_LIST>
     submit-cli list-students
     submit-cli download [options] <ASSIGNMENT_ID>
 
 Options:
+    -w <WORD_LIMIT>, --word-limit=<WORD_LIMIT>
+        Add a word limit to an assigned task
+    -i <NUMBER>, --number-of-images=<NUMBER>
+        Allow image uploads [Default: 0]
     -o <OUTPUTFILE>, --output=<OUTPUTFILE>
         Output filename [Default: test.{}]
     -f <FORMAT>, --output-format=<FORMAT>

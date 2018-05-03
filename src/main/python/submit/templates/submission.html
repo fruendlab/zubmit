@@ -28,7 +28,7 @@ function checkWordLimit() {
 {% if word_limit %}
 <p>Word limit: {{ word_limit }}</p>
 {% endif %}
-<form action="/submit/{{ id }}/" method="POST">
+<form action="/submit/{{ id }}/" method="POST" enctype="multipart/form-data">
   Your student id: <input id="student-id" type="text" name="student_id"></input><br>
   <textarea
          id="submission-field"
@@ -39,6 +39,9 @@ function checkWordLimit() {
          oninput="checkWordLimit()"
          {% endif %}
          ></textarea><br>
+  {% for image_number in range(nimages) %}
+  <p>Image {{ image_number + 1 }}: <input type="file" name="figure_{{ image_number + 1 }}"></p>
+  {% endfor %}
   <button type="submit" id="submit-button">Submit</button>
   {% if word_limit %}
   Current word count: <span id="word_count">0</span>
