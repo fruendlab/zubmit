@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+"""
+Usage:
+    submit-cli assign <DESCRIPTION> <DUE_DATE> [<WORD_LIMIT>]
+    submit-cli register <STUDENT_LIST>
+    submit-cli list-students
+    submit-cli download [options] <ASSIGNMENT_ID>
+
+Options:
+    -o <OUTPUTFILE>, --output=<OUTPUTFILE>
+        Output filename [Default: test.{}]
+    -f <FORMAT>, --output-format=<FORMAT>
+        Output format [Default: markdown]
+"""
+
+from docopt import docopt
+from submit import cli
+
+URL = 'http://127.0.0.1:5000'
+
+if __name__ == '__main__':
+    args = docopt(__doc__)
+    print(args)
+
+    if args['assign']:
+        cli.assign(args, URL)
+    elif args['register']:
+        cli.register(args, URL)
+    elif args['list-students']:
+        cli.list_students(args, URL)
+    elif args['download']:
+        cli.download(args, URL)

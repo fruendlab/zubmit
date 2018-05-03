@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block scripts %}
+<script>
+{% if word_limit %}
+var wordLimit={{ word_limit }};
+function checkWordLimit() {
+  var field = document.getElementById('submission-field');
+  var nwords = field.value.split(/[\s]+/).filter(
+      function (word) {
+        if (word == "#" || word == "##" || word == "###") return false;
+        if (word.length > 0) return true;
+        return false;
+      }
+      ).length;
+  document.getElementById('word_count').innerHTML = nwords;
+  if (nwords > wordLimit) {
+    document.getElementById('submit-button').disabled=true;
+  } else {
+    document.getElementById('submit-button').disabled=false;
+  }
+}
+{% endif %}
+</script>
+{% endblock %}
+
+{% block content %}
+<p>{{ discription }}</p>
+{% if word_limit %}
+<p>Word limit: {{ word_limit }}</p>
+{% endif %}
+<form action="/submit/{{ id }}/" method="POST">
+  Your student id: <input id="student-id" type="text" name="student_id"></input><br>
+  <textarea
+         id="submission-field"
+         name="submission_text"
+         cols="80" rows="30"
+         wrap="soft"
+         {% if word_limit %}
+         oninput="checkWordLimit()"
+         {% endif %}
+         ></textarea><br>
+  <button type="submit" id="submit-button">Submit</button>
+  {% if word_limit %}
+  Current word count: <span id="word_count">0</span>
+  {% endif %}
+</form>
+{% endblock %}
