@@ -1,3 +1,6 @@
+from io import BytesIO
+import base64
+from PIL import Image as pImage
 from pony import orm
 from datetime import date
 
@@ -56,6 +59,26 @@ class Submission(db.Entity):
     student = orm.Required(Student)
     grade = orm.Optional(int)
     images = orm.Set('Image')
+
+    def with_images(self, url, inline=False):
+        elements = [self.text]
+        for img in self.images:
+            if inline:
+                buff = BytesIO(img.image)
+                image = pImage.open(buff)
+                buff = BytesIO()
+                image.save(buff, format='PNG')
+                img_str = base64.b64encode(buff.getvalue()).decode('utf-8')
+                image_url = 'data:image/png;base64,{}'.format(img_str)
+            else:
+                image_url = ('{}/api/submissions/{}/figures/{}/'
+                             .format(url, self.id, img.id))
+            elements.append('<p><h3>{}</h3><br><img src="{}" /></>'
+                            .format(img.name
+                                    .title()
+                                    .replace('_', ' '),
+                                    image_url))
+        return '\n\n'.join(elements)
 
 
 class Image(db.Entity):

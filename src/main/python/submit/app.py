@@ -78,3 +78,8 @@ def download_submissions_by_student(student_id):
     return api.merge_student_submissions(student_id,
                                          assignment_ids,
                                          target=output_format)
+
+
+@app.route('/api/submissions/<submission_id>/figures/<figure_name>')
+def download_submission_figure(submission_id, figure_name):
+    return api.get_figure_for_submission(submission_id, figure_name)

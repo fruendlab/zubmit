@@ -62,15 +62,16 @@ def register_submission(student_id, assignment_id, text, images):
                             student=student)
     if assignment.nimages > 0:
         for name, im in images.items():
-            image = Image(submission=submission,
-                          name=name,
-                          image=im.stream.read())
+            Image(submission=submission,
+                  name=name,
+                  image=im.stream.read())
 
     return student.name, student.student_id
 
 
 @orm.db_session()
-def merge_student_submissions(student_id, assignment_ids, target='html'):
+def merge_student_submissions(student_id, assignment_ids,
+                              target='html', url='http://127.0.0.1:5000'):
     student = Student[student_id]
     text = defaultdict(lambda i: 'Not submitted')
     if assignment_ids == 'all':
@@ -78,7 +79,8 @@ def merge_student_submissions(student_id, assignment_ids, target='html'):
                           for submission in student.submissions]
     for submission in student.submissions:
         if submission.assignment.id in assignment_ids:
-            text[submission.assignment.id] = submission.text
+            text[submission.assignment.id] = submission.with_images(
+                url, not target == 'markdown')
     text = [text[assignment_id] for assignment_id in assignment_ids]
     text = '\n---\n'.join(text)
     if target == 'markdown':
@@ -89,7 +91,8 @@ def merge_student_submissions(student_id, assignment_ids, target='html'):
 
 
 @orm.db_session()
-def merge_assignment_submissions(assignment_id, student_ids, target='html'):
+def merge_assignment_submissions(assignment_id, student_ids,
+                                 target='html', url='http://127.0.0.1:5000'):
     assignment = Assignment[assignment_id]
     if student_ids == 'all':
         student_ids = [submission.student.student_id
@@ -97,7 +100,8 @@ def merge_assignment_submissions(assignment_id, student_ids, target='html'):
     text = defaultdict(lambda i: 'Student {}: Not submitted'.format(i))
     for submission in assignment.submissions:
         if submission.student.student_id in student_ids:
-            text[submission.student.student_id] = submission.text
+            text[submission.student.student_id] = submission.with_images(
+                url, not target == 'markdown')
     text = [Student[student_id].pretty() + '\n' + text[student_id]
             for student_id in student_ids]
     newpage = '\n<div style="page-break-after: always;"></div>\n'
@@ -113,3 +117,10 @@ def merge_assignment_submissions(assignment_id, student_ids, target='html'):
 def get_assignment(assignment_id):
     assignment = Assignment[assignment_id]
     return assignment.as_dict()
+
+
+@orm.db_session()
+def get_figure_for_submission(submission_id, figure_name):
+    submission = Submission[submission_id]
+    figure = submission.images.get(name=figure_name)
+    return figure.image
