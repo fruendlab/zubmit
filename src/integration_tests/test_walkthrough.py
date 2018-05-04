@@ -38,6 +38,7 @@ with Browser('chrome', executable_path=executable) as browser:
 for fmt, viewer in [('markdown', 'less'),
                     ('html', 'google-chrome'),
                     ('pdf', 'zathura')]:
+    print(fmt)
     cli.download({'--output-format': fmt,
                   '<ASSIGNMENT_ID>': '1',
                   '--output': 'test.{}'}, URL)
