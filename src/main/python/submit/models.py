@@ -10,7 +10,7 @@ db = orm.Database()
 
 def bind():
     if os.getenv('USER') == 'zubmit':
-        db.bind('sqlite', filename='current_db.sqlite')
+        db.bind('sqlite', filename=os.path.expanduser('~/current_db.sqlite'))
         db.generate_mapping(create_tables=True)
     else:
         bind_test()
