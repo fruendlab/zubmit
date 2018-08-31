@@ -9,7 +9,7 @@ db = orm.Database()
 
 
 def bind():
-    if os.getenv('ZUBMIT_PRODUCTION') == 'zubmit':
+    if os.getenv('ZUBMIT_PRODUCTION'):
         db.bind('sqlite',
                 filename=os.path.expanduser('~/current_db.sqlite'),
                 create_db=True)
