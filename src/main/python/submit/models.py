@@ -1,3 +1,4 @@
+import os
 from io import BytesIO
 import base64
 from PIL import Image as pImage
@@ -5,6 +6,14 @@ from pony import orm
 from datetime import date
 
 db = orm.Database()
+
+
+def bind():
+    if os.getenv('USER') == 'zubmit':
+        db.bind('sqlite', filename='current_db.sqlite')
+        db.generate_mapping(create_tables=True)
+    else:
+        bind_test()
 
 
 def bind_test():

@@ -11,7 +11,7 @@ env = Environment(
     autoescape=select_autoescape(['html']),
 )
 
-models.bind_test()
+models.bind()
 
 
 @app.route('/enter/<assignment_id>/')
