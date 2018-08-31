@@ -24,3 +24,4 @@ def set_properties(project):
     project.depends_on('docopt')
     project.depends_on('python-dateutil')
     project.build_depends_on('splinter')
+    project.set_property('coverage_break_build', False)
