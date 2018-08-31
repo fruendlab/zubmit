@@ -1,6 +1,6 @@
 from unittest import TestCase, mock
 
-from submit import convert
+from zubmit import convert
 
 
 class TestToHtml(TestCase):
@@ -14,7 +14,7 @@ class TestToHtml(TestCase):
 class TestToPdf(TestCase):
 
     def setUp(self):
-        self.patches = mock.patch.multiple('submit.convert',
+        self.patches = mock.patch.multiple('zubmit.convert',
                                            HTML=mock.DEFAULT,
                                            CSS=mock.DEFAULT,
                                            to_html=mock.DEFAULT)

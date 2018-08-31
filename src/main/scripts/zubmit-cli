@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
 Usage:
-    submit-cli assign [options] <DESCRIPTION> <DUE_DATE>
-    submit-cli register <STUDENT_LIST>
-    submit-cli list-students
-    submit-cli download [options] <ASSIGNMENT_ID>
+    zubmit-cli assign [options] <DESCRIPTION> <DUE_DATE>
+    zubmit-cli register <STUDENT_LIST>
+    zubmit-cli list-students
+    zubmit-cli download [options] <ASSIGNMENT_ID>
 
 Options:
     -w <WORD_LIMIT>, --word-limit=<WORD_LIMIT>
@@ -18,7 +18,7 @@ Options:
 """
 
 from docopt import docopt
-from submit import cli
+from zubmit import cli
 
 URL = 'http://127.0.0.1:5000'
 

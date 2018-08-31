@@ -3,7 +3,7 @@ import time
 import os
 import subprocess
 
-from submit import cli
+from zubmit import cli
 
 URL = 'http://127.0.0.1:5000'
 
