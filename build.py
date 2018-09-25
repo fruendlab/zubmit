@@ -26,4 +26,6 @@ def set_properties(project):
     project.depends_on('requests')
     project.build_depends_on('splinter')
     project.set_property('coverage_break_build', False)
-    project.package_data.update({'zubmit': 'templates/*'})
+    project.include_file('zubmit', 'templates/base.html')
+    project.include_file('zubmit', 'templates/submission.html')
+    project.include_file('zubmit', 'templates/finished.html')
