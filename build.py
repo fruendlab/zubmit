@@ -9,7 +9,7 @@ use_plugin("python.coverage")
 use_plugin("python.distutils")
 
 
-name = "submit"
+name = "zubmit"
 default_task = "publish"
 version = count_travis()
 
@@ -23,5 +23,7 @@ def set_properties(project):
     project.depends_on('flask')
     project.depends_on('docopt')
     project.depends_on('python-dateutil')
+    project.depends_on('requests')
     project.build_depends_on('splinter')
     project.set_property('coverage_break_build', False)
+    project.package_data.update({'zubmit': 'templates/*'})

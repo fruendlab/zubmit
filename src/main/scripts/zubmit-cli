@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 """
 Usage:
-    zubmit-cli assign [options] <DESCRIPTION> <DUE_DATE>
-    zubmit-cli register <STUDENT_LIST>
-    zubmit-cli list-students
-    zubmit-cli download [options] <ASSIGNMENT_ID>
+    zubmit-cli [options] assign <DESCRIPTION> <DUE_DATE>
+    zubmit-cli [options] register <STUDENT_LIST>
+    zubmit-cli [options] list-students
+    zubmit-cli [options] download <ASSIGNMENT_ID>
 
 Options:
     -w <WORD_LIMIT>, --word-limit=<WORD_LIMIT>
@@ -15,22 +15,22 @@ Options:
         Output filename [Default: test.{}]
     -f <FORMAT>, --output-format=<FORMAT>
         Output format [Default: markdown]
+    -u <URL>, --url=<URL>
+        Url of server [Default: http://127.0.0.1:5000]
 """
 
 from docopt import docopt
 from zubmit import cli
-
-URL = 'http://127.0.0.1:5000'
 
 if __name__ == '__main__':
     args = docopt(__doc__)
     print(args)
 
     if args['assign']:
-        cli.assign(args, URL)
+        cli.assign(args, args['--url'])
     elif args['register']:
-        cli.register(args, URL)
+        cli.register(args, args['--url'])
     elif args['list-students']:
-        cli.list_students(args, URL)
+        cli.list_students(args, args['--url'])
     elif args['download']:
-        cli.download(args, URL)
+        cli.download(args, args['--url'])
